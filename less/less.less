@@ -1,0 +1,97 @@
+@import "var.less";
+*{
+  //box-sizing: border-box;
+}
+
+//固定布局
+.container{
+  //宽度
+  //固定布局
+  &{
+    width: @num1;
+    margin: 0 auto;
+  }
+  //流式布局
+  &-fluid{
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  //行
+  //固定布局
+  &>.row{
+    width: 100%;height:auto;
+    //清除浮动的影响，撑开父容器
+    .clearfix;
+  }
+  //流式布局
+  &-fluid>.row{
+    width: 100%;height:auto;
+    .clearfix;
+  }
+}
+
+//列--->循环
+//小屏->默认
+.loop(@type:s,@i:1) when (@i<=@colNum){
+  //固定布局
+  .container>.row>.col-@{type}-@{i}{
+    width: @i/@colNum*100%;
+    float: left;
+  }
+
+  //流式布局
+  .container-fluid>.row>.col-@{type}-@{i}{
+    width: @i/@colNum*100%;
+    float: left;
+  }
+  //递归
+  .loop(@type,@i+1);
+}
+
+//调用
+.loop();
+//隐藏类
+//固定布局
+.container>.row>.col-s-hide{
+  display: none;
+}
+
+
+//流式布局
+.container-fluid>.row>.col-s-hide{
+  display: none;
+}
+
+//大屏
+@media screen and (min-width: @num3){
+  .container{
+    width: @num2;
+  }
+  .loop(l);
+
+
+  .container>.row>.col-s-hide{
+    display: block;
+  }
+  .container>.row>.col-l-hide{
+    display: none;
+  }
+
+  .container--fluid>.row>.col-s-hide{
+    display: block;
+  }
+  .container-fluid>.row>.col-l-hide{
+    display: none;
+  }
+
+}
+
+//清除浮动影响的方法
+.clearfix(){
+  &:before,&:after{
+    content: "";
+    display: block;
+    clear: both;
+  }
+}
